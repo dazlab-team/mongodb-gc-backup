@@ -1,0 +1,18 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mongodb-gc-backup
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: mongodb-gc-backup
+              image: dazlabteam/mongodb-gc-backup
+              envFrom:
+                - secretRef:
+                    name: mongodb-gc-backup
+          restartPolicy: Never
